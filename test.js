@@ -50,3 +50,11 @@ test('Convert BYDAY/byweekday', t => {
 	t.is(convert.byweekday(RRule.SA),
 		 '<dayInWeek><day>MONDAY</day><day>SATURDAY</day></dayInWeek>');
 });
+
+test('Convert BYMONTHDAY', t => {
+	t.is(convert.bymonthday(31), '<dayInMonth>31</dayInMonth>');
+	t.is(convert.bymonthday(1), '<dayInMonth>1</dayInMonth>');
+
+	t.throws(() => convert.bymonthday(0), 'Expects a number greater than 0, received 0');
+	t.throws(() => convert.bymonthday(32), 'Expects a number less than 32, received 32');
+});
