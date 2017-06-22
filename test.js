@@ -1,8 +1,8 @@
 import test from 'ava';
-import RRule from 'rrule';
+import { MO, TU, WE, TH, FR, SA, SU } from 'rrule';
 import convert from '.';
 
-test('Convert FREQ', () => {
+test('Convert FREQ', t => {
 	const PREFIX = "RRULE:FREQ=";
 	// iCal: "HOURLY" / "DAILY" / "WEEKLY" / "MONTHLY" / "YEARLY"
 	// WX: DAILY, WEEKLY, NO_REPEAT, MONTHLY, YEARLY and CONSTANT
@@ -17,74 +17,76 @@ test('Convert FREQ', () => {
 	t.is(convert.freq(YEARLY), '<repeatType>YEARLY</repeatType>');
 });
 
-test('Convert COUNT', () => {
+test('Convert COUNT', t => {
 	// iCAL: COUNT -
 	// WX: afterMeetingNumb - [1 ... 999]
 	t.is(convert.count(1), '<afterMeetingNumber>1</afterMeetingNumber>');
-	t.is(convert.count(999), '<afterMeetingNumber>99</afterMeetingNumber>');
-	t.throws(() => convert.count(1000), 'WebEx does not support numbers greater than 999');
-	t.throws(() => convert.count(-1), 'Expects a number greater than 0, received -1');
+	t.is(convert.count(999), '<afterMeetingNumber>999</afterMeetingNumber>');
+	const errorMax = t.throws(() => convert.count(1000), Error);
+	t.is(errorMax.message, 'Expected a number less than 999, received 1000');
+	const errorMin = t.throws(() => convert.count(-1), Error);
+	t.is(errorMin.message, 'Expected a number greater than 0, received -1');
 });
 
-test('Convert INTERVAL', () => {
+test('Convert INTERVAL', t => {
 	// iCAL: COUNT -
 	// WX: INTERVAL - [1 ... 99]
 
 	t.is(convert.interval(1), '<interval>1</interval>');
 	t.is(convert.interval(99), '<interval>99</interval>');
-	t.throws(() => convert.interval(100), 'WebEx does not support numbers greater than 99');
-	t.throws(() => convert.interval(0), 'Expects a number greater than 1, received -1');
+	t.throws(() => convert.interval(100), 'Expected a number less than 99, received 99');
+	t.throws(() => convert.interval(0), 'Expected a number greater than 1, received -1');
 });
 
-test('Convert BYDAY/byweekday', () => {
-	t.is(convert.byweekday([RRule.MO, RRule.SU]),
+test('Convert BYDAY/byweekday', t => {
+	t.is(convert.byweekday([MO, SU]),
 		 '<dayInWeek><day>MONDAY</day><day>SUNDAY</day></dayInWeek>');
-	t.is(convert.byweekday(RRule.TU),
+	t.is(convert.byweekday(TU),
 		 '<dayInWeek><day>MONDAY</day><day>TUESDAY</day></dayInWeek>');
-	t.is(convert.byweekday(RRule.WE),
+	t.is(convert.byweekday(WE),
 		 '<dayInWeek><day>MONDAY</day><day>WEDNESDAY</day></dayInWeek>');
-	t.is(convert.byweekday(RRule.TH),
+	t.is(convert.byweekday(TH),
 		 '<dayInWeek><day>MONDAY</day><day>THURSDAY</day></dayInWeek>');
-	t.is(convert.byweekday(RRule.FR),
+	t.is(convert.byweekday(FR),
 		 '<dayInWeek><day>MONDAY</day><day>FRIDAY</day></dayInWeek>');
-	t.is(convert.byweekday(RRule.SA),
+	t.is(convert.byweekday(SA),
 		 '<dayInWeek><day>MONDAY</day><day>SATURDAY</day></dayInWeek>');
 });
 
-test('Convert BYMONTHDAY', () => {
+test('Convert BYMONTHDAY', t => {
 	t.is(convert.bymonthday(31), '<dayInMonth>31</dayInMonth>');
 	t.is(convert.bymonthday(1), '<dayInMonth>1</dayInMonth>');
 
-	t.throws(() => convert.bymonthday(0), 'Expects a number greater than 0, received 0');
-	t.throws(() => convert.bymonthday(32), 'Expects a number less than 32, received 32');
+	t.throws(() => convert.bymonthday(0), 'Expected a number greater than 0, received 0');
+	t.throws(() => convert.bymonthday(32), 'Expected a number less than 32, received 32');
 });
 
-test('Convert UNTIL', () => {
+test('Convert UNTIL', t => {
 	// Thu Jan 31 2013 00:00:00
 	t.is(convert.until(new Date(2012, 12, 31)), '<expirationDate>01/31/2013 00:00:00</expirationDate>');
 
-	t.throws(() => convert.until('tee hee'), 'Expects type object, recieved type string');
-	t.throws(() => convert.until(1300), 'Expects type object, recieved type number');
+	t.throws(() => convert.until('tee hee'), 'Expected type object, received type string');
+	t.throws(() => convert.until(1300), 'Expected type object, received type number');
 });
 
-test('Convert BYWEEKNO', () => {
+test('Convert BYWEEKNO', t => {
 	// iCal: byweekno
 	// W: <weekInMonth>
 
 	t.is(convert.byweekno(1), '<weekInMonth>1</weekInMonth>');
 	t.is(convert.byweekno(5), '<weekInMonth>5</weekInMonth>');
 
-	t.throws(() => convert.bymonth(6), 'Expects a number less than 6, received 6');
-	t.throws(() => convert.bymonth(0), 'Expects a number greater than 0, received 0');
+	t.throws(() => convert.bymonth(6), 'Expected a number less than 6, received 6');
+	t.throws(() => convert.bymonth(0), 'Expected a number greater than 0, received 0');
 });
 
-test('Convert BYMONTH', () => {
+test('Convert BYMONTH', t => {
 	// iCal: BYMONTH
 	// W: <monthInYear>
 
 	t.is(convert.bymonth(1), '<monthInYear>1</monthInYear>');
 	t.is(convert.bymonth(12), '<monthInYear>12</monthInYear>');
 
-	t.throws(() => convert.bymonth(13), 'Expects a number less than 13, received 13');
-	t.throws(() => convert.bymonth(0), 'Expects a number greater than 0, received 0');
+	t.throws(() => convert.bymonth(13), 'Expected a number less than 13, received 13');
+	t.throws(() => convert.bymonth(0), 'Expected a number greater than 0, received 0');
 });
