@@ -18,9 +18,19 @@ test('Convert FREQ', t => {
 
 test('Convert COUNT', t => {
 	// iCAL: COUNT -
-	// WX: interval - [1 ... 99]
+	// WX: afterMeetingNumb - [1 ... 999]
 	t.is(convert.count(1), '<afterMeetingNumber>1</afterMeetingNumber>');
-	t.is(convert.count(99), '<afterMeetingNumber>99</afterMeetingNumber>');
-	t.throws(() => convert.count(99), 'WebEx does not support numbers greater than 99');
-	t.throws(() => convert.count(0), 'Expects a number greater than 0, received 0');
+	t.is(convert.count(999), '<afterMeetingNumber>99</afterMeetingNumber>');
+	t.throws(() => convert.count(1000), 'WebEx does not support numbers greater than 999');
+	t.throws(() => convert.count(-1), 'Expects a number greater than 0, received -1');
+});
+
+test('Convert INTERVAL', t => {
+	// iCAL: COUNT -
+	// WX: INTERVAL - [1 ... 99]
+
+	t.is(convert.interval(1), '<interval>1</interval>');
+	t.is(convert.interval(99), '<interval>99</interval>');
+	t.throws(() => convert.interval(100), 'WebEx does not support numbers greater than 99');
+	t.throws(() => convert.interval(0), 'Expects a number greater than 1, received -1');
 });
