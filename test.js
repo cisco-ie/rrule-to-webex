@@ -1,4 +1,5 @@
 import test from 'ava';
+import RRule from 'rrule';
 import convert from '.';
 
 test('Convert FREQ', t => {
@@ -33,4 +34,19 @@ test('Convert INTERVAL', t => {
 	t.is(convert.interval(99), '<interval>99</interval>');
 	t.throws(() => convert.interval(100), 'WebEx does not support numbers greater than 99');
 	t.throws(() => convert.interval(0), 'Expects a number greater than 1, received -1');
+});
+
+test('Convert BYDAY/byweekday', t => {
+	t.is(convert.byweekday([RRule.MO, RRule.SU]),
+		 '<dayInWeek><day>MONDAY</day><day>SUNDAY</day></dayInWeek>');
+	t.is(convert.byweekday(RRule.TU),
+		 '<dayInWeek><day>MONDAY</day><day>TUESDAY</day></dayInWeek>');
+	t.is(convert.byweekday(RRule.WE),
+		 '<dayInWeek><day>MONDAY</day><day>WEDNESDAY</day></dayInWeek>');
+	t.is(convert.byweekday(RRule.TH),
+		 '<dayInWeek><day>MONDAY</day><day>THURSDAY</day></dayInWeek>');
+	t.is(convert.byweekday(RRule.FR),
+		 '<dayInWeek><day>MONDAY</day><day>FRIDAY</day></dayInWeek>');
+	t.is(convert.byweekday(RRule.SA),
+		 '<dayInWeek><day>MONDAY</day><day>SATURDAY</day></dayInWeek>');
 });
