@@ -60,7 +60,11 @@ test('Convert BYMONTHDAY', () => {
 });
 
 test('Convert UNTIL', () => {
+	// Thu Jan 31 2013 00:00:00
+	t.is(convert.until(new Date(2012, 12, 31)), '<expirationDate>01/31/2013 00:00:00</expirationDate>');
 
+	t.throws(() => convert.until('tee hee'), 'Expects type object, recieved type string');
+	t.throws(() => convert.until(1300), 'Expects type object, recieved type number');
 });
 
 test('Convert BYWEEKNO', () => {
@@ -84,5 +88,3 @@ test('Convert BYMONTH', () => {
 	t.throws(() => convert.bymonth(13), 'Expects a number less than 13, received 13');
 	t.throws(() => convert.bymonth(0), 'Expects a number greater than 0, received 0');
 });
-
-test('Convert
