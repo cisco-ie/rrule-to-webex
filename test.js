@@ -64,10 +64,17 @@ test('Convert UNTIL', () => {
 });
 
 test('Convert BYWEEKNO', () => {
+	// iCal: byweekno
+	// W: <weekInMonth>
 
+	t.is(convert.byweekno(1), '<weekInMonth>1</weekInMonth>');
+	t.is(convert.byweekno(5), '<weekInMonth>5</weekInMonth>');
+
+	t.throws(() => convert.bymonth(6), 'Expects a number less than 6, received 6');
+	t.throws(() => convert.bymonth(0), 'Expects a number greater than 0, received 0');
 });
 
-test('convert BYMONTH', () => {
+test('Convert BYMONTH', () => {
 	// iCal: BYMONTH
 	// W: <monthInYear>
 
@@ -77,3 +84,5 @@ test('convert BYMONTH', () => {
 	t.throws(() => convert.bymonth(13), 'Expects a number less than 13, received 13');
 	t.throws(() => convert.bymonth(0), 'Expects a number greater than 0, received 0');
 });
+
+test('Convert
