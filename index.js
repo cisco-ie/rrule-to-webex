@@ -1,7 +1,6 @@
 'use strict';
 const RRule = require('RRule');
 
-
 // Defining day constants passed by RRule
 const MO = RRule.MO;
 const TU = RRule.TU;
@@ -30,9 +29,6 @@ module.exports = (input, opts) => {
 
 	return input + ' & ' + (opts.postfix || 'rainbows');
 };
-
-
-
 
 function convert() {
 
@@ -70,6 +66,28 @@ function byday (day) {
 
 	const dayXml = days.map(day => `<day>${webexDays[day]}</day>`);
 	return `<dayInWeek>${dayXml}</dayInWeek>`;
+}
+
+
+module.exports.bymonthday = bymonthday;
+
+function bymonthday (num) {
+	rangeCheck(num, 31, 1);
+	return `<dayInMonth>${num}</dayInMonth>`;
+}
+
+module.exports.byweekno = byweekno;
+
+function byweekno (num) {
+	rangeCheck(num, 5, 1);
+	return `<weekInMonth>${num}</weekInMonth>`;
+}
+
+module.exports.bymonth = bymonth;
+
+function bymonth (num) {
+	rangeCheck(num, 12, 1);
+	return `<monthInYear>${num}</monthInYear>`;
 }
 
 

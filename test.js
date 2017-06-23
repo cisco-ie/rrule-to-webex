@@ -90,6 +90,9 @@ test('Convert BYMONTH', t => {
 	t.is(convert.bymonth(1), '<monthInYear>1</monthInYear>');
 	t.is(convert.bymonth(12), '<monthInYear>12</monthInYear>');
 
-	t.throws(() => convert.bymonth(13), 'Expected a number less than 13, received 13');
-	t.throws(() => convert.bymonth(0), 'Expected a number greater than 0, received 0');
+
+	const errorMax = t.throws(() => convert.bymonth(13), Error);
+	t.is(errorMax.message, 'Expected a number less than 13, received 13');
+	const errorMin = t.throws(() => convert.bymonth(0), Error);
+	t.is(errorMin.message, 'Expected a number greater than 0, received 0');
 });
