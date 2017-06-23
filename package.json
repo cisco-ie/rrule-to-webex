@@ -23,6 +23,7 @@
     "webex"
   ],
   "dependencies": {
+    "arr-u-legit": "^0.1.0",
     "rrule": "^2.2.0"
   },
   "devDependencies": {

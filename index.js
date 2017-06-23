@@ -1,5 +1,6 @@
 'use strict';
 const RRule = require('RRule');
+const legit = require('arr-u-legit');
 
 // Defining day constants passed by RRule
 const MO = RRule.MO;
@@ -19,16 +20,6 @@ webexDay[TH] = 'THURSDAY';
 webexDay[FR] = 'FRIDAY';
 webexDay[SA] = 'SATURDAY';
 webexDay[SU] = 'SUNDAY';
-
-
-// Helper to check if a array contains invalid values or not
-const arrayValid = (unsureArray, validOptions) => {
-	// Returns item if not valid
-	const checkValid = item => validOptions.indexOf(item) === -1 ? false : true;
-	// returns false if array contains an invalid value
-	return unsureArray.reduce((acc, day) => (acc === false) ? false : checkValid(day));
-}
-
 
 module.exports = (input, opts) => {
 	if (typeof input !== 'string') {
@@ -61,15 +52,19 @@ function interval (num) {
 module.exports.byweekday = byweekday;
 
 function byweekday (day) {
-	const days = (Array.isArray(day)) ? day : [day];
-	const supportedDays = [MO, TU, WE, TH, FR, SA, SU];
-	const isSupported = arrayValid(days, supportedDays);
+	let days = (Array.isArray(day)) ? day : [day];
+	// Convert to string for comparison check
+	days = days.map(day => day.toString());
+	const supportedDays = [MO, TU, WE, TH, FR, SA, SU].map(day => day.toString());
+	const isSupported = legit(days, supportedDays);
 
-	if (!isSupported) {
-		throw new Error(`Expected valid days, received ${days}`);
+	if (isSupported === false) {
+		throw new Error(`Expected valid inputs (${supportedDays}), received ${days}`);
 	}
 
-	const dayXml = days.map(day => `<day>${webexDays[day]}</day>`);
+	const dayXml = days
+		  .map(day => `<day>${webexDay[day]}</day>`)
+		  .join('');
 	return `<dayInWeek>${dayXml}</dayInWeek>`;
 }
 
