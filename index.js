@@ -1,6 +1,7 @@
 'use strict';
 const RRule = require('RRule');
 const legit = require('arr-u-legit');
+const moment = require('moment');
 
 // Defining day constants passed by RRule
 const MO = RRule.MO;
@@ -10,6 +11,11 @@ const TH = RRule.TH;
 const FR = RRule.FR;
 const SA = RRule.SA;
 const SU = RRule.SU;
+
+const DAILY = RRule.DAILY;
+const WEEKLY = RRule.WEEKLY;
+const MONTHLY = RRule.MONTHLY;
+const YEARLY = RRule.YEARLY;
 
 // Maps the Constant to WebEx Day Constant
 const webexDay = {};
@@ -21,16 +27,13 @@ webexDay[FR] = 'FRIDAY';
 webexDay[SA] = 'SATURDAY';
 webexDay[SU] = 'SUNDAY';
 
-module.exports = (input, opts) => {
-	if (typeof input !== 'string') {
-		throw new TypeError(`Expected a string, got ${typeof input}`);
-	}
+const webexFreq = {};
+webexFreq[DAILY] = 'DAILY';
+webexFreq[WEEKLY] = 'WEEKLY';
+webexFreq[MONTHLY] = 'MONTHLY';
+webexFreq[YEARLY] = 'YEARLY';
 
-	opts = opts || {};
-
-	return input + ' & ' + (opts.postfix || 'rainbows');
-};
-
+// Main Function
 function convert() {
 
 }
@@ -55,7 +58,7 @@ function byweekday (day) {
 	let days = (Array.isArray(day)) ? day : [day];
 	// Convert to string for comparison check
 	days = days.map(day => day.toString());
-	const supportedDays = [MO, TU, WE, TH, FR, SA, SU].map(day => day.toString());
+	const supportedDays = Object.keys(webexDay).map(day => day.toString());
 	const isSupported = legit(days, supportedDays);
 
 	if (isSupported === false) {
@@ -91,8 +94,17 @@ function bymonth (num) {
 
 module.exports.freq = freq;
 
-function freq (freqConstant) {
+function freq (freqType) {
+	// Convert to string for comparison check
+	let frequency = freqType.toString();
+	const supported = Object.keys(webexFreq);
+	const isCorrect = supported.indexOf(frequency) !== -1;
 
+	if (!isCorrect) {
+		throw new Error(`Expected valid frequency ${supported.toString()}, received ${freqType}`);
+	}
+
+	return `<repeatType>${webexFreq[frequency]}</repeatType>`;
 }
 
 // Throws error if numbers are pass max/min conditions, max and min are inclusive to range
@@ -105,5 +117,18 @@ function rangeCheck(num, max, min) {
 		throw new Error(`Expected a number greater than ${min - 1}, received ${num}`);
 	}
 
-	return num
+	return num;
+}
+
+module.exports.until = until;
+
+function until(inputDate) {
+	if (!moment(inputDate).isValid()) {
+		throw new Error('Invalid date received');
+	}
+
+	const momentDate = moment(inputDate);
+
+	const webexDate = momentDate.format('MM/DD/YYYY HH:mm:ss');
+	return `<expirationDate>${webexDate}</expirationDate>`;
 }

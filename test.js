@@ -8,7 +8,7 @@ import convert from '.';
 test('Convert FREQ', t => {
 	// WX: DAILY, WEEKLY, NO_REPEAT, MONTHLY, YEARLY and CONSTANT
 	t.is(convert.freq(WEEKLY), '<repeatType>WEEKLY</repeatType>');
-	t.is(convert.freq(DAILY), '<repeatType>DAILY/repeatType>');
+	t.is(convert.freq(DAILY), '<repeatType>DAILY</repeatType>');
 	t.is(convert.freq(MONTHLY), '<repeatType>MONTHLY</repeatType>');
 	t.is(convert.freq(YEARLY), '<repeatType>YEARLY</repeatType>');
 });
@@ -18,10 +18,8 @@ test('Convert COUNT', t => {
 	// WX: afterMeetingNumb - [1 ... 999]
 	t.is(convert.count(1), '<afterMeetingNumber>1</afterMeetingNumber>');
 	t.is(convert.count(999), '<afterMeetingNumber>999</afterMeetingNumber>');
-	const errorMax = t.throws(() => convert.count(1000), Error);
-	t.is(errorMax.message, 'Expected a number less than 1000, received 1000');
-	const errorMin = t.throws(() => convert.count(0), Error);
-	t.is(errorMin.message, 'Expected a number greater than 0, received 0');
+	t.throws(() => convert.count(1000), 'Expected a number less than 1000, received 1000');
+	t.throws(() => convert.count(0), 'Expected a number greater than 0, received 0');
 });
 
 test('Convert INTERVAL', t => {
@@ -50,9 +48,7 @@ test('Convert BYDAY/byweekday', t => {
 		 '<dayInWeek><day>FRIDAY</day></dayInWeek>');
 	t.is(convert.byweekday(SA),
 		 '<dayInWeek><day>SATURDAY</day></dayInWeek>');
-	const errorMax = t.throws(() => convert.byweekday('FROOODAY'), Error);
-	t.is(errorMax.message, 'Expected valid inputs (MO,TU,WE,TH,FR,SA,SU), received FROOODAY');
-
+	t.throws(() => convert.byweekday('FROOODAY'), 'Expected valid inputs (MO,TU,WE,TH,FR,SA,SU), received FROOODAY');
 });
 
 test('Convert BYMONTHDAY', t => {
@@ -66,9 +62,9 @@ test('Convert BYMONTHDAY', t => {
 test('Convert UNTIL', t => {
 	// Thu Jan 31 2013 00:00:00
 	t.is(convert.until(new Date(2012, 12, 31)), '<expirationDate>01/31/2013 00:00:00</expirationDate>');
+	t.is(convert.until(new Date(2015, 10, 31, 8, 30)), '<expirationDate>12/01/2015 08:30:00</expirationDate>');
 
-	t.throws(() => convert.until('tee hee'), 'Expected type object, received type string');
-	t.throws(() => convert.until(1300), 'Expected type object, received type number');
+	t.throws(() => convert.until('tee hee'), 'Invalid date received');
 });
 
 test('Convert BYWEEKNO', t => {
@@ -91,9 +87,6 @@ test('Convert BYMONTH', t => {
 	t.is(convert.bymonth(1), '<monthInYear>1</monthInYear>');
 	t.is(convert.bymonth(12), '<monthInYear>12</monthInYear>');
 
-
-	const errorMax = t.throws(() => convert.bymonth(13), Error);
-	t.is(errorMax.message, 'Expected a number less than 13, received 13');
-	const errorMin = t.throws(() => convert.bymonth(0), Error);
-	t.is(errorMin.message, 'Expected a number greater than 0, received 0');
+	t.throws(() => convert.bymonth(13), 'Expected a number less than 13, received 13');
+	t.throws(() => convert.bymonth(0), 'Expected a number greater than 0, received 0');
 });
