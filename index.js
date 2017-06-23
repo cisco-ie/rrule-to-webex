@@ -95,7 +95,6 @@ function freq (freqConstant) {
 
 }
 
-
 // Throws error if numbers are pass max/min conditions, max and min are inclusive to range
 function rangeCheck(num, max, min) {
 	if (num > max) {

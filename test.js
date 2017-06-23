@@ -78,8 +78,10 @@ test('Convert BYWEEKNO', t => {
 	t.is(convert.byweekno(1), '<weekInMonth>1</weekInMonth>');
 	t.is(convert.byweekno(5), '<weekInMonth>5</weekInMonth>');
 
-	t.throws(() => convert.bymonth(6), 'Expected a number less than 6, received 6');
-	t.throws(() => convert.bymonth(0), 'Expected a number greater than 0, received 0');
+	const errorMax = t.throws(() => convert.byweekno(6), Error);
+	t.is(errorMax.message, 'Expected a number less than 6, received 6');
+	const errorMin = t.throws(() => convert.byweekno(0), Error);
+	t.is(errorMin.message, 'Expected a number greater than 0, received 0');
 });
 
 test('Convert BYMONTH', t => {
