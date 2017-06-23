@@ -23,9 +23,9 @@ test('Convert COUNT', t => {
 	t.is(convert.count(1), '<afterMeetingNumber>1</afterMeetingNumber>');
 	t.is(convert.count(999), '<afterMeetingNumber>999</afterMeetingNumber>');
 	const errorMax = t.throws(() => convert.count(1000), Error);
-	t.is(errorMax.message, 'Expected a number less than 999, received 1000');
-	const errorMin = t.throws(() => convert.count(-1), Error);
-	t.is(errorMin.message, 'Expected a number greater than 0, received -1');
+	t.is(errorMax.message, 'Expected a number less than 1000, received 1000');
+	const errorMin = t.throws(() => convert.count(0), Error);
+	t.is(errorMin.message, 'Expected a number greater than 0, received 0');
 });
 
 test('Convert INTERVAL', t => {
@@ -34,8 +34,11 @@ test('Convert INTERVAL', t => {
 
 	t.is(convert.interval(1), '<interval>1</interval>');
 	t.is(convert.interval(99), '<interval>99</interval>');
-	t.throws(() => convert.interval(100), 'Expected a number less than 99, received 99');
-	t.throws(() => convert.interval(0), 'Expected a number greater than 1, received -1');
+
+	const errorMax = t.throws(() => convert.interval(100), Error);
+	t.is(errorMax.message, 'Expected a number less than 100, received 100');
+	const errorMin = t.throws(() => convert.interval(0), Error);
+	t.is(errorMin.message, 'Expected a number greater than 0, received 0');
 });
 
 test('Convert BYDAY/byweekday', t => {
