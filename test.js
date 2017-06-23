@@ -1,16 +1,12 @@
 import test from 'ava';
-import { MO, TU, WE, TH, FR, SA, SU } from 'rrule';
+import {
+	MO, TU, WE, TH, FR, SA, SU,
+	YEARLY, MONTHLY, WEEKLY, DAILY
+} from 'rrule';
 import convert from '.';
 
 test('Convert FREQ', t => {
-	const PREFIX = "RRULE:FREQ=";
-	// iCal: "HOURLY" / "DAILY" / "WEEKLY" / "MONTHLY" / "YEARLY"
 	// WX: DAILY, WEEKLY, NO_REPEAT, MONTHLY, YEARLY and CONSTANT
-	const DAILY = 'DAILY';
-	const WEEKLY = 'WEEKLY';
-	const MONTHLY = 'MONTHLY';
-	const YEARLY = 'YEARLY';
-
 	t.is(convert.freq(WEEKLY), '<repeatType>WEEKLY</repeatType>');
 	t.is(convert.freq(DAILY), '<repeatType>DAILY/repeatType>');
 	t.is(convert.freq(MONTHLY), '<repeatType>MONTHLY</repeatType>');

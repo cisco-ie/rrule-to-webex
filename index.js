@@ -20,6 +20,16 @@ webexDay[FR] = 'FRIDAY';
 webexDay[SA] = 'SATURDAY';
 webexDay[SU] = 'SUNDAY';
 
+
+// Helper to check if a array contains invalid values or not
+const arrayValid = (unsureArray, validOptions) => {
+	// Returns item if not valid
+	const checkValid = item => validOptions.indexOf(item) === -1 ? false : true;
+	// returns false if array contains an invalid value
+	return unsureArray.reduce((acc, day) => (acc === false) ? false : checkValid(day));
+}
+
+
 module.exports = (input, opts) => {
 	if (typeof input !== 'string') {
 		throw new TypeError(`Expected a string, got ${typeof input}`);
@@ -48,26 +58,20 @@ function interval (num) {
 	return `<interval>${num}</interval>`;
 }
 
-module.exports.byday = byday;
+module.exports.byweekday = byweekday;
 
-function byday (day) {
-	const days = (isArray(day)) ? day : [day];
-
+function byweekday (day) {
+	const days = (Array.isArray(day)) ? day : [day];
 	const supportedDays = [MO, TU, WE, TH, FR, SA, SU];
-	// Returns false if not supported
-	const checkSupport = day => (supportedDays.indexOf(day) === -1 ) ? false : true;
+	const isSupported = arrayValid(days, supportedDays);
 
-	// Reduce to single state check
-	const isSupported = days.reduce((acc, day) => (acc === false) ? checkSupport(day) : false);
-
-	if (!isSupported(day)) {
-		throw new Error('Input contains a non valid day');
+	if (!isSupported) {
+		throw new Error(`Expected valid days, received ${days}`);
 	}
 
 	const dayXml = days.map(day => `<day>${webexDays[day]}</day>`);
 	return `<dayInWeek>${dayXml}</dayInWeek>`;
 }
-
 
 module.exports.bymonthday = bymonthday;
 
@@ -88,6 +92,12 @@ module.exports.bymonth = bymonth;
 function bymonth (num) {
 	rangeCheck(num, 12, 1);
 	return `<monthInYear>${num}</monthInYear>`;
+}
+
+module.exports.freq = freq;
+
+function freq (freqConstant) {
+
 }
 
 
