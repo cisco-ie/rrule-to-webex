@@ -1,7 +1,8 @@
 # ical-to-webex-recur [![Build Status](https://travis-ci.org/brh55/ical-to-webex-recur.svg?branch=master)](https://travis-ci.org/brh55/ical-to-webex-recur) [![Coverage Status](https://coveralls.io/repos/github/brh55/ical-to-webex-recur/badge.svg?branch=master)](https://coveralls.io/github/brh55/ical-to-webex-recur?branch=master)
 
-> Converts iCalendar RFC-5545 recurrence rule to Cisco&#39;s WebEx recurrence XML tree
+> Converts iCalendar RFC-5545 recurrence rule to Cisco's WebEx XML `<repeat>` XML sub tree
 
+This module uses [`RRule.js`](https://github.com/jakubroztocil/rrule) to process iCalendar RFC RRule strings, therefore it also supports the ability to create `<repeat>` trees with `RRule.js`'s objects. It's recommended to please go over the documentation to understand some of the differences between iCalendar RFC. 
 
 ## Install
 
@@ -13,33 +14,79 @@ $ npm install --save ical-to-webex-recur
 ## Usage
 
 ```js
-const icalToWebexRecur = require('ical-to-webex-recur');
+const convert = require('ical-to-webex-recur');
 
-icalToWebexRecur('unicorns');
-//=> 'unicorns & rainbows'
+const RFCString = "FREQ=WEEKLY;INTERVAL=5;UNTIL=20130130T230000Z;BYDAY=MO,FR";
+
+convert(RFCString);
+// === Output ===
+// <repeat>
+//    <repeatType>WEEKLY</repeatType>
+//    <interval>5</interval>
+//    <expirationDate>01/30/2013 17:00:00</expirationDate>
+//    <dayInWeek>
+//      <day>MONDAY</day>
+//      <day>FRIDAY</day>
+//    </dayInWeek>
+// </repeat>
 ```
 
+## Supported RFC Reccur Parts
+WebEx only supports a subset of the available (RFC iCalendar Recurrence parts](https://tools.ietf.org/html/rfc5545#section-3.3.10), this module attempts to map the available properties as defined in the `repeat` schema below to their iCalendar counter parts.
+
+![Repeat Schema](https://user-images.githubusercontent.com/6020066/27402017-dfa99724-568a-11e7-949c-b6e5e479c8f1.png)
+
+### Caveats:
+- **dayInYear** is deprecated, thus is not supported by this module
 
 ## API
 
-### icalToWebexRecur(input, [options])
+### rruleToWebEx(RRule)
 
-#### input
+Returns a XML tree defined by the WebEx repeat schema.
 
-Type: `string`
+#### RRule
 
-Lorem ipsum.
+Type: `string` (iCalendar RFC String) || `object` (RRule.js Object)
 
-#### options
+The iCalendar String or RRule.js object to be converted
 
-##### foo
+### Specific Methods
+`rrule-to-webex` also provides access to particular RRule conversion methods for custom uses and individual part conversion.
 
-Type: `boolean`<br>
-Default: `false`
+### .freq(frequencyTypes)
+#### frequencyTypes
+Type: `RRule.[WEEKlY, DAILY, MONTHLY, YEARLY]`
 
-Lorem ipsum.
+### .count(number)
+#### number
+Type: `number`<br>
+Range: 1 ... 999
 
+### .interval(number)
+#### number
+Type: `number`<br>
+Range: 1 .. 99
+
+### .byweekday(weekday)
+#### weekday
+Type: `RRule.[MO, TU, WE, TH, FR, SA]`<br>
+Range: 1 .. 99
+
+### .bymonthday(number)
+#### number
+Type: `number`<br>
+Range: 1 .. 99
+
+### .until(date)
+#### date
+> Uses `moment.js` to parse date strings
+
+Type: `date object` || `date string` ((ISO 8601)[https://en.wikipedia.org/wiki/ISO_8601], (RFC 2822)[https://tools.ietf.org/html/rfc2822#section-3.3], new Date(dateString))
+
+## Stellaris Related Modules
+This project is part of the Stellaris Ecosystem ✨, where you can find similar Cisco Collaboration modules to help facilitate in your development projects.
 
 ## License
 
-MIT © [Brandon Him](https://github.com/cisco-ie/ical-to-webex-recur)
+MIT © [Cisco Innovation Edge](https://github.com/cisco-ie/rrule-to-webex)
