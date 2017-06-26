@@ -82,10 +82,13 @@ Range: 1 .. 99
 #### date
 > Uses `moment.js` to parse date strings
 
-Type: `date object` || `date string` ((ISO 8601)[https://en.wikipedia.org/wiki/ISO_8601], (RFC 2822)[https://tools.ietf.org/html/rfc2822#section-3.3], new Date(dateString))
+Type: `date object` || `date string` ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601), [RFC 2822](https://tools.ietf.org/html/rfc2822#section-3.3), [`new Date(dateString)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date))
 
 ## Stellaris Related Modules
 This project is part of the Stellaris Ecosystem ✨, where you can find similar Cisco Collaboration modules to help facilitate in your development projects.
+
+- [cisco-tp-client](https://github.com/cisco-ie/cisco-tp-client) - A Node.js API client to interact with Cisco TelePresence endpoints/codecs (sx series, dx series, ex series)
+- [tp-json-formatter](https://github.com/cisco-ie/tp-json-formatter) - A module that formats HTTP Feedback JSON responses from Cisco TelePresence units in a simpler, flatter JSON format.
 
 ## License
 
