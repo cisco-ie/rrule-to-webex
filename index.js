@@ -1,5 +1,5 @@
 'use strict';
-const RRule = require('RRule');
+const RRule = require('rrule');
 const legit = require('arr-u-legit');
 const moment = require('moment');
 const forOwn = require('lodash.forown');
@@ -46,7 +46,7 @@ const mapFn = {
 };
 
 // Main Function
-module.exports = (rule) => {
+module.exports = rule => {
 	let RR;
 	if (typeof rule === 'string') {
 		const RFCstring = rule;
@@ -69,25 +69,25 @@ module.exports = (rule) => {
 
 	xmlString += '</repeat>';
 	return xmlString;
-}
+};
 
 module.exports.count = count;
 
-function count (num) {
+function count(num) {
 	rangeCheck(num, 999, 1);
 	return `<afterMeetingNumber>${num}</afterMeetingNumber>`;
 }
 
 module.exports.interval = interval;
 
-function interval (num) {
+function interval(num) {
 	rangeCheck(num, 99, 1);
 	return `<interval>${num}</interval>`;
 }
 
 module.exports.byweekday = byweekday;
 
-function byweekday (day) {
+function byweekday(day) {
 	let days = (Array.isArray(day)) ? day : [day];
 	// Convert to string for comparison check
 	days = days.map(day => day.toString());
@@ -99,35 +99,35 @@ function byweekday (day) {
 	}
 
 	const dayXml = days
-		  .map(day => `<day>${webexDay[day]}</day>`)
-		  .join('');
+		.map(day => `<day>${webexDay[day]}</day>`)
+		.join('');
 	return `<dayInWeek>${dayXml}</dayInWeek>`;
 }
 
 module.exports.bymonthday = bymonthday;
 
-function bymonthday (num) {
+function bymonthday(num) {
 	rangeCheck(num, 31, 1);
 	return `<dayInMonth>${num}</dayInMonth>`;
 }
 
 module.exports.byweekno = byweekno;
 
-function byweekno (num) {
+function byweekno(num) {
 	rangeCheck(num, 5, 1);
 	return `<weekInMonth>${num}</weekInMonth>`;
 }
 
 module.exports.bymonth = bymonth;
 
-function bymonth (num) {
+function bymonth(num) {
 	rangeCheck(num, 12, 1);
 	return `<monthInYear>${num}</monthInYear>`;
 }
 
 module.exports.freq = freq;
 
-function freq (freqType) {
+function freq(freqType) {
 	// Convert to string for comparison check
 	let frequency = freqType.toString();
 	const supported = Object.keys(webexFreq);
@@ -152,7 +152,6 @@ function until(inputDate) {
 	const webexDate = momentDate.format('MM/DD/YYYY HH:mm:ss');
 	return `<expirationDate>${webexDate}</expirationDate>`;
 }
-
 
 // Throws error if numbers are pass max/min conditions, max and min are inclusive to range
 function rangeCheck(num, max, min) {

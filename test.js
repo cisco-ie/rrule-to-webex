@@ -65,17 +65,17 @@ test('Convert INTERVAL', t => {
 
 test('Convert BYDAY/byweekday', t => {
 	t.is(convert.byweekday([MO, SU]),
-		 '<dayInWeek><day>MONDAY</day><day>SUNDAY</day></dayInWeek>');
+		'<dayInWeek><day>MONDAY</day><day>SUNDAY</day></dayInWeek>');
 	t.is(convert.byweekday(TU),
-		 '<dayInWeek><day>TUESDAY</day></dayInWeek>');
+		'<dayInWeek><day>TUESDAY</day></dayInWeek>');
 	t.is(convert.byweekday(WE),
-		 '<dayInWeek><day>WEDNESDAY</day></dayInWeek>');
+		'<dayInWeek><day>WEDNESDAY</day></dayInWeek>');
 	t.is(convert.byweekday(TH),
-		 '<dayInWeek><day>THURSDAY</day></dayInWeek>');
+		'<dayInWeek><day>THURSDAY</day></dayInWeek>');
 	t.is(convert.byweekday(FR),
-		 '<dayInWeek><day>FRIDAY</day></dayInWeek>');
+		'<dayInWeek><day>FRIDAY</day></dayInWeek>');
 	t.is(convert.byweekday(SA),
-		 '<dayInWeek><day>SATURDAY</day></dayInWeek>');
+		'<dayInWeek><day>SATURDAY</day></dayInWeek>');
 	t.throws(() => convert.byweekday('FROOODAY'), 'Expected valid inputs (MO,TU,WE,TH,FR,SA,SU), received FROOODAY');
 });
 
