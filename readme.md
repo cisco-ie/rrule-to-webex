@@ -1,4 +1,4 @@
-# ical-to-webex-recur [![Build Status](https://travis-ci.org/brh55/ical-to-webex-recur.svg?branch=master)](https://travis-ci.org/brh55/ical-to-webex-recur) [![Coverage Status](https://coveralls.io/repos/github/brh55/ical-to-webex-recur/badge.svg?branch=master)](https://coveralls.io/github/brh55/ical-to-webex-recur?branch=master)
+# rrule-to-webex [![Build Status](https://travis-ci.org/cisco-ie/rrule-to-webex.svg?branch=master)](https://travis-ci.org/cisco-ie/rrule-to-webex) [![Coverage Status](https://coveralls.io/repos/github/cisco-ie/rrule-to-webex/badge.svg?branch=master)](https://coveralls.io/github/cisco-ie/rrule-to-webex?branch=master) [![Stellaris Module](https://img.shields.io/badge/%20✨%20Stellaris-Module-0092ff.svg?style=flat-square)](https://github.com/stellaris-ie/)
 
 > Converts iCalendar RFC-5545 recurrence rule to Cisco's WebEx XML `<repeat>` XML sub tree
 
@@ -7,14 +7,14 @@ This module uses [`RRule.js`](https://github.com/jakubroztocil/rrule) to process
 ## Install
 
 ```
-$ npm install --save ical-to-webex-recur
+$ npm install --save rrule-to-webex
 ```
 
 
 ## Usage
 
 ```js
-const convert = require('ical-to-webex-recur');
+const convert = require('rrule-to-webex');
 
 const RFCString = "FREQ=WEEKLY;INTERVAL=5;UNTIL=20130130T230000Z;BYDAY=MO,FR";
 
