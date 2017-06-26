@@ -5,6 +5,34 @@ import {
 } from 'rrule';
 import convert from '.';
 
+test('Convert RRule string', t => {
+	const iCalStr = 'FREQ=WEEKLY;INTERVAL=5;UNTIL=20130130T230000Z;BYDAY=MO,FR';
+	t.is(convert(iCalStr), '<repeat><repeatType>WEEKLY</repeatType><interval>5</interval><expirationDate>01/30/2013 17:00:00</expirationDate><dayInWeek><day>MONDAY</day><day>FRIDAY</day></dayInWeek></repeat>');
+});
+
+test('Convert RRule Object', t => {
+	const obj = {
+		freq: WEEKLY,
+		interval: 5,
+		byweekday: [MO, FR],
+		until: new Date(2012, 12, 31)
+	};
+
+	t.is(convert(obj), '<repeat><repeatType>WEEKLY</repeatType><interval>5</interval><dayInWeek><day>MONDAY</day><day>FRIDAY</day></dayInWeek><expirationDate>01/31/2013 00:00:00</expirationDate></repeat>');
+
+	const fullObj = {
+		freq: DAILY,
+		interval: 2,
+		byweekday: [MO],
+		until: new Date(2012, 12, 31),
+		bymonth: 1,
+		bymonthday: 20,
+		count: 10
+	};
+
+	t.is(convert(fullObj), '<repeat><repeatType>DAILY</repeatType><interval>2</interval><dayInWeek><day>MONDAY</day></dayInWeek><expirationDate>01/31/2013 00:00:00</expirationDate><monthInYear>1</monthInYear><dayInMonth>20</dayInMonth><afterMeetingNumber>10</afterMeetingNumber></repeat>');
+});
+
 test('Convert FREQ', t => {
 	// WX: DAILY, WEEKLY, NO_REPEAT, MONTHLY, YEARLY and CONSTANT
 	t.is(convert.freq(WEEKLY), '<repeatType>WEEKLY</repeatType>');

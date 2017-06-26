@@ -2,6 +2,7 @@
 const RRule = require('RRule');
 const legit = require('arr-u-legit');
 const moment = require('moment');
+const forOwn = require('lodash.forown');
 
 // Defining day constants passed by RRule
 const MO = RRule.MO;
@@ -33,9 +34,41 @@ webexFreq[WEEKLY] = 'WEEKLY';
 webexFreq[MONTHLY] = 'MONTHLY';
 webexFreq[YEARLY] = 'YEARLY';
 
-// Main Function
-function convert() {
+const mapFn = {
+	count,
+	freq,
+	interval,
+	until,
+	bymonthday,
+	byweekno,
+	byweekday,
+	bymonth
+};
 
+// Main Function
+module.exports = (rule) => {
+	let RR;
+	if (typeof rule === 'string') {
+		const RFCstring = rule;
+		RR = RRule.fromString(RFCstring);
+	}
+
+	if (typeof rule === 'object') {
+		RR = new RRule(rule);
+	}
+
+	// Iterate through the RR Original Options
+	// Pass the key & value into the mapFn to generate
+	// proper xml
+
+	let xmlString = '<repeat>';
+	forOwn(RR.origOptions, (value, key) => {
+		const xml = mapFn[key](value);
+		xmlString += xml;
+	});
+
+	xmlString += '</repeat>';
+	return xmlString;
 }
 
 module.exports.count = count;
@@ -107,19 +140,6 @@ function freq (freqType) {
 	return `<repeatType>${webexFreq[frequency]}</repeatType>`;
 }
 
-// Throws error if numbers are pass max/min conditions, max and min are inclusive to range
-function rangeCheck(num, max, min) {
-	if (num > max) {
-		throw new Error(`Expected a number less than ${max + 1}, received ${num}`);
-	}
-
-	if (num < min) {
-		throw new Error(`Expected a number greater than ${min - 1}, received ${num}`);
-	}
-
-	return num;
-}
-
 module.exports.until = until;
 
 function until(inputDate) {
@@ -131,4 +151,18 @@ function until(inputDate) {
 
 	const webexDate = momentDate.format('MM/DD/YYYY HH:mm:ss');
 	return `<expirationDate>${webexDate}</expirationDate>`;
+}
+
+
+// Throws error if numbers are pass max/min conditions, max and min are inclusive to range
+function rangeCheck(num, max, min) {
+	if (num > max) {
+		throw new Error(`Expected a number less than ${max + 1}, received ${num}`);
+	}
+
+	if (num < min) {
+		throw new Error(`Expected a number greater than ${min - 1}, received ${num}`);
+	}
+
+	return num;
 }

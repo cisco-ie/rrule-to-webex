@@ -24,6 +24,7 @@
   ],
   "dependencies": {
     "arr-u-legit": "^0.1.0",
+    "lodash.forown": "^4.4.0",
     "moment": "^2.18.1",
     "rrule": "^2.2.0"
   },
