@@ -7,7 +7,7 @@ import convert from '.';
 
 test('Convert RRule string', t => {
 	const iCalStr = 'FREQ=WEEKLY;INTERVAL=5;UNTIL=20130130T230000Z;BYDAY=MO,FR';
-	t.is(convert(iCalStr), '<repeat><repeatType>WEEKLY</repeatType><interval>5</interval><expirationDate>01/30/2013 17:00:00</expirationDate><dayInWeek><day>MONDAY</day><day>FRIDAY</day></dayInWeek></repeat>');
+	t.is(convert(iCalStr), '<repeat><repeatType>WEEKLY</repeatType><interval>5</interval><expirationDate>01/30/2013 15:00:00</expirationDate><dayInWeek><day>MONDAY</day><day>FRIDAY</day></dayInWeek></repeat>');
 });
 
 test('Convert RRule Object', t => {

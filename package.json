@@ -13,7 +13,7 @@
     "node": ">=6"
   },
   "scripts": {
-    "test": "xo && nyc ava"
+    "test": "TZ='America/Los_Angeles' xo && nyc ava"
   },
   "files": [
     "index.js"
