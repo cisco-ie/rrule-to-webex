@@ -1,26 +1,30 @@
 {
   "name": "rrule-to-webex",
-  "version": "0.0.0",
-  "description": "Converts iCalendar RFC-5545 recurrence rule to Cisco&#39;s WebEx recurrence XML tree",
+  "version": "0.1.0",
+  "description": "Converts iCalendar RFC-5545 recurrence rule to Cisco'ss WebEx recurrence XML tree",
   "license": "MIT",
   "repository": "brh55/rrule-to-webex",
   "author": {
     "name": "Brandon Him",
-    "email": "brh55@drexel.edu",
+    "email": "brhim@cisco.edu",
     "url": "github.com/cisco-ie/rrule-to-webex"
   },
   "engines": {
     "node": ">=6"
   },
   "scripts": {
-    "test": "TZ='America/Los_Angeles' xo && nyc ava"
+    "test": "TZ=America/Los_Angeles xo && nyc ava"
   },
   "files": [
     "index.js"
   ],
   "keywords": [
     "rrule",
-    "webex"
+    "webex",
+    "recurrence",
+    "iCalendar",
+    "cisco webex",
+    "RFC-5545"
   ],
   "dependencies": {
     "arr-u-legit": "^0.1.0",
