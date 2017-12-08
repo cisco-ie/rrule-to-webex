@@ -10,7 +10,7 @@
     "url": "github.com/cisco-ie/rrule-to-webex"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=6"
   },
   "scripts": {
     "test": "xo && nyc ava"
