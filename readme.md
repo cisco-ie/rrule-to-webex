@@ -84,11 +84,14 @@ Range: 1 .. 99
 
 Type: `date object` || `date string` ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601), [RFC 2822](https://tools.ietf.org/html/rfc2822#section-3.3), [`new Date(dateString)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date))
 
-## Stellaris Related Modules
-This project is part of the Stellaris Ecosystem ✨, where you can find similar Cisco Collaboration modules to help facilitate in your development projects.
+## Related
+If you found this client useful, don't forget to star this repository and check other related open-source Cisco modules by the Innovation Edge team:
 
-- [cisco-tp-client](https://github.com/cisco-ie/cisco-tp-client) - A Node.js API client to interact with Cisco TelePresence endpoints/codecs (sx series, dx series, ex series)
-- [tp-json-formatter](https://github.com/cisco-ie/tp-json-formatter) - A module that formats HTTP Feedback JSON responses from Cisco TelePresence units in a simpler, flatter JSON format.
+- [webex-api-client](https://github.com/cisco-ie/webex-api-client) - A node module to simplify interacting with Cisco WebEx XML-based APIs from the browser or server
+- [cisco-tp-client](https://github.com/cisco-ie/cisco-tp-client) - A node API client to ease interactions with Cisco WebEx Telepresence-enabled endpoints / codecs
+- [webex-time-zones](https://github.com/cisco-ie/webex-time-zones) - 🌐 An enumerated list of Cisco WebEx supported time zones 
+- [webex-date](https://github.com/cisco-ie/webex-date) - 🕰 Convert a JavaScript date type, RFC 2822, ISO-8601 to the WebEx XML API supported format.
+- [webex-enum-types](https://github.com/cisco-ie/webex-enum-types) - 🍭 A JSON mapping of enumerated types for Cisco's WebEx XML API
 
 ## License
 
